@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevOps Roadmap — სრული გზამკვლევი</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0B0E14;
+    --bg-surface: #11151C;
+    --bg-raised: #1A1F2B;
+    --bg-hover: #222838;
+    --border: #1E2433;
+    --border-light: #2A3145;
+    --text-primary: #D4DBE8;
+    --text-secondary: #7A8599;
+    --text-muted: #4E5669;
+    --accent-blue: #4DA0FF;
+    --accent-green: #41D98C;
+    --accent-orange: #FF9254;
+    --accent-purple: #B07EFF;
+    --accent-red: #FF6B81;
+    --accent-cyan: #36D6D6;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: var(--font-mono);
+    background: var(--bg-deep);
+    color: var(--text-primary);
+  }
+
+  .app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  /* ─── Header ─── */
+  .header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #0F1219 0%, var(--bg-deep) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    gap: 16px;
+  }
+
+  .header h1 {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .header h1 .g1 { color: var(--accent-blue); }
+  .header h1 .g2 { color: var(--accent-green); }
+  .header h1 .g3 { color: var(--accent-orange); }
+
+  .header-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .progress-label {
+    font-size: 10px;
+    color: var(--text-secondary);
+  }
+
+  .progress-bar {
+    width: 130px;
+    height: 5px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+    border-radius: 3px;
+    transition: width 0.5s var(--ease);
+  }
+
+  .progress-pct {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    min-width: 30px;
+    text-align: right;
+  }
+
+  /* ─── Layout ─── */
+  .layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    width: 270px;
+    min-width: 270px;
+    border-right: 1px solid var(--border);
+    background: var(--bg-deep);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
+
+  .phase-item {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.2s var(--ease);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .phase-item:hover { background: var(--bg-surface); }
+  .phase-item.active {
+    background: var(--bg-surface);
+    border-left-color: var(--accent-blue);
+  }
+
+  .phase-icon { font-size: 20px; flex-shrink: 0; }
+
+  .phase-info { flex: 1; min-width: 0; }
+
+  .phase-name {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .phase-dur {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .phase-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  /* ─── Skill Tracker ─── */
+  .tracker {
+    padding: 16px;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .tracker-title {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+
+  .tracker-phase-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    margin-bottom: 4px;
+    margin-top: 10px;
+  }
+  .tracker-phase-label:first-of-type { margin-top: 0; }
+
+  .tracker-skill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 2px 0;
+    cursor: pointer;
+    font-size: 11px;
+  }
+
+  .tracker-skill input[type="checkbox"] {
+    accent-color: var(--accent-green);
+    width: 13px;
+    height: 13px;
+    cursor: pointer;
+  }
+
+  .tracker-skill span {
+    color: var(--text-secondary);
+    transition: all 0.2s;
+  }
+
+  .tracker-skill.done span {
+    color: var(--accent-green);
+    text-decoration: line-through;
+  }
+
+  /* ─── Main ─── */
+  .main {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .main::-webkit-scrollbar { width: 6px; }
+  .main::-webkit-scrollbar-track { background: transparent; }
+  .main::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+
+  /* ─── Welcome ─── */
+  .welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+    min-height: 100%;
+    animation: fadeIn 0.5s var(--ease);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .welcome-icon { font-size: 56px; margin-bottom: 16px; }
+
+  .welcome h2 {
+    font-family: var(--font-sans);
+    font-size: 22px;
+    font-weight: 700;
+    color: #F0F4FC;
+    margin-bottom: 12px;
+  }
+
+  .welcome p {
+    color: var(--text-secondary);
+    font-size: 13px;
+    max-width: 480px;
+    line-height: 1.8;
+  }
+
+  .welcome-grid {
+    display: flex;
+    gap: 14px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .welcome-card {
+    padding: 18px 22px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    min-width: 105px;
+    transition: all 0.25s var(--ease);
+  }
+
+  .welcome-card:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(77, 160, 255, 0.08);
+  }
+
+  .welcome-card .wc-icon { font-size: 28px; }
+  .welcome-card .wc-name { font-size: 11px; color: var(--text-primary); margin-top: 8px; font-weight: 500; }
+  .welcome-card .wc-dur { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ─── Phase View ─── */
+  .phase-header {
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-surface);
+    animation: fadeIn 0.3s var(--ease);
+  }
+
+  .phase-header-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .phase-header-top .ph-icon { font-size: 30px; }
+
+  .phase-header-top h2 {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 700;
+    color: #F0F4FC;
+  }
+
+  .phase-header-top p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  .topic-tabs {
+    display: flex;
+    gap: 8px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+
+  .topic-tab {
+    padding: 6px 16px;
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: var(--font-sans);
+    transition: all 0.2s var(--ease);
+  }
+
+  .topic-tab:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+
+  .topic-tab.active {
+    border-color: var(--accent-blue);
+    background: rgba(77, 160, 255, 0.1);
+    color: var(--accent-blue);
+  }
+
+  .topic-prompt {
+    padding: 40px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  /* ─── Content Area ─── */
+  .content-area {
+    padding: 20px 28px;
+    animation: fadeIn 0.3s var(--ease);
+  }
+
+  .detail-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  .detail-tab {
+    padding: 8px 16px;
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    background: var(--bg-deep);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    transition: all 0.2s var(--ease);
+  }
+
+  .detail-tab:hover { background: var(--bg-raised); color: var(--text-primary); }
+
+  .detail-tab.active {
+    background: var(--bg-raised);
+    color: #F0F4FC;
+    border-color: var(--border-light);
+  }
+
+  /* ─── Terminal Block ─── */
+  .terminal {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    animation: fadeIn 0.3s var(--ease);
+  }
+
+  .terminal-bar {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-raised);
+  }
+
+  .terminal-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .terminal-dot.r { background: var(--accent-red); }
+  .terminal-dot.y { background: var(--accent-orange); }
+  .terminal-dot.g { background: var(--accent-green); }
+
+  .terminal-title {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: var(--font-sans);
+    margin-left: 8px;
+  }
+
+  .terminal pre {
+    padding: 22px;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.75;
+    overflow-x: auto;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: var(--font-mono);
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 768px) {
+    .sidebar { width: 220px; min-width: 220px; }
+    .phase-header { padding: 16px 18px; }
+    .content-area { padding: 16px 18px; }
+  }
+
+  @media (max-width: 600px) {
+    .layout { flex-direction: column; }
+    .sidebar {
+      width: 100%;
+      min-width: 100%;
+      max-height: 200px;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .tracker { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <h1><span class="g1">Dev</span><span class="g2">Ops</span> <span class="g3">Roadmap</span></h1>
+      <div class="header-sub">Junior → Senior | სრული გზამკვლევი</div>
+    </div>
+    <div class="progress-wrap">
+      <span class="progress-label" id="progressCount">0/20 skills</span>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <span class="progress-pct" id="progressPct">0%</span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar"></div>
+
+    <!-- Main -->
+    <div class="main" id="main"></div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ───
+const phases = [
+  {
+    id: 1, title: "Bare Metal & Linux", duration: "1-2 კვირა", icon: "⌨️",
+    description: "სანამ ავტომატიზაციაზე გადახვალ, უნდა იცოდე რას აავტომატებ.",
+    topics: [
+      { name: "Terminal Mastery", details: [
+        { title: "ფაილური სისტემა", content: `Linux-ის ფაილური სისტემა ხისებრი სტრუქტურაა. ყველაფერი იწყება / (root) დირექტორიიდან.
+
+მთავარი დირექტორიები:
+/home — მომხმარებლების პირადი ფაილები
+/etc — კონფიგურაციის ფაილები (nginx.conf, ssh/sshd_config)
+/var — ლოგები, ქეშები, ცვალებადი მონაცემები
+/tmp — დროებითი ფაილები
+/opt — მესამე მხარის პროგრამები
+
+ძირითადი ბრძანებები:
+  ls -la          # ყველა ფაილი + პერმისიები
+  cd /var/log     # გადასვლა
+  pwd             # სად ვარ ახლა
+  mkdir -p a/b/c  # nested დირექტორიების შექმნა
+  cp -r dir1 dir2 # რეკურსიული კოპირება
+  mv old new      # გადარქმევა/გადატანა
+  rm -rf dir      # ⚠️ ფრთხილად! რეკურსიული წაშლა` },
+        { title: "პერმისიები (chmod, chown)", content: `ყოველ ფაილს აქვს 3 კატეგორია: Owner, Group, Others
+თითოეულს — Read(4), Write(2), Execute(1)
+
+chmod 755 script.sh
+  Owner: rwx (7) — სრული წვდომა
+  Group: r-x (5) — კითხვა + გაშვება
+  Others: r-x (5) — კითხვა + გაშვება
+
+chmod 644 config.yml
+  Owner: rw- (6) — კითხვა + ჩაწერა
+  Group: r-- (4) — მხოლოდ კითხვა
+  Others: r-- (4) — მხოლოდ კითხვა
+
+chown user:group file.txt  # მფლობელის შეცვლა
+chown -R www-data:www-data /var/www  # რეკურსიული
+
+პრაქტიკული მაგალითი:
+  # Node.js აპისთვის
+  sudo chown -R deploy:deploy /opt/myapp
+  chmod 750 /opt/myapp
+  chmod 640 /opt/myapp/.env  # .env მხოლოდ owner-მა წაიკითხოს` },
+        { title: "grep / find / awk", content: `grep — ტექსტის ძებნა ფაილებში:
+  grep "error" /var/log/syslog           # "error" ძებნა
+  grep -r "TODO" ./src                    # რეკურსიული ძებნა
+  grep -i "warning" app.log               # case-insensitive
+  grep -c "500" access.log                # რამდენჯერ?
+  grep -A 3 "Exception" error.log         # + 3 ხაზი შემდეგ
+
+find — ფაილების ძებნა:
+  find / -name "*.log" -mtime -7          # ლოგები ბოლო 7 დღის
+  find /tmp -size +100M -delete           # 100MB+ ფაილების წაშლა
+  find . -name "node_modules" -type d     # ყველა node_modules
+
+awk — ტექსტის დამუშავება:
+  awk '{print $1}' access.log             # პირველი სვეტი (IP)
+  awk '/ERROR/ {count++} END {print count}' app.log
+  df -h | awk '$5 > 80 {print $1, $5}'   # 80%+ დისკები
+
+პრაქტიკული კომბინაცია:
+  # ტოპ 10 IP მისამართი access.log-დან
+  awk '{print $1}' access.log | sort | uniq -c | sort -rn | head -10` }
+      ]},
+      { name: "Systemd", details: [
+        { title: "სერვისის შექმნა", content: `Systemd — Linux-ის init სისტემაა. ის მართავს სერვისებს (daemons).
+
+შექმენი ფაილი: /etc/systemd/system/myapp.service
+
+[Unit]
+Description=My Node.js Application
+After=network.target
+
+[Service]
+Type=simple
+User=deploy
+WorkingDirectory=/opt/myapp
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=myapp
+Environment=NODE_ENV=production
+Environment=PORT=3000
+
+[Install]
+WantedBy=multi-user.target` },
+        { title: "Systemctl ბრძანებები", content: `სერვისის მართვა:
+  sudo systemctl start myapp      # გაშვება
+  sudo systemctl stop myapp       # გაჩერება
+  sudo systemctl restart myapp    # გადატვირთვა
+  sudo systemctl status myapp     # სტატუსი
+  sudo systemctl enable myapp     # ავტო-გაშვება boot-ზე
+  sudo systemctl disable myapp    # ავტო-გაშვების გათიშვა
+
+ლოგების ნახვა:
+  journalctl -u myapp             # ყველა ლოგი
+  journalctl -u myapp -f          # real-time (tail)
+  journalctl -u myapp --since "1 hour ago"
+  journalctl -u myapp --no-pager -n 50
+
+.NET აპისთვის მაგალითი:
+[Service]
+ExecStart=/usr/bin/dotnet /opt/myapi/MyApi.dll
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=ASPNETCORE_URLS=http://localhost:5000` }
+      ]},
+      { name: "SSH & Security", details: [
+        { title: "SSH Keys", content: `პაროლით შესვლა სახიფათოა. SSH key გაცილებით უსაფრთხოა.
+
+ლოკალურ მანქანაზე:
+  ssh-keygen -t ed25519 -C "your@email.com"
+  # შეინახე: ~/.ssh/id_ed25519 (private) და .pub (public)
+
+გადაგზავნე სერვერზე:
+  ssh-copy-id -i ~/.ssh/id_ed25519.pub user@server-ip
+  # ან ხელით:
+  cat ~/.ssh/id_ed25519.pub | ssh user@server \\
+    "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+
+სერვერზე გამორთე პაროლით შესვლა:
+  sudo nano /etc/ssh/sshd_config
+  
+  PasswordAuthentication no
+  PubkeyAuthentication yes
+  PermitRootLogin no
+  
+  sudo systemctl restart sshd` },
+        { title: "Firewall (UFW)", content: `UFW — Uncomplicated Firewall. მარტივი ინტერფეისი iptables-ისთვის.
+
+  sudo ufw default deny incoming    # ყველაფერი დაბლოკილია
+  sudo ufw default allow outgoing   # გამავალი — ნებადართული
+  
+  sudo ufw allow 22/tcp             # SSH (ან შეცვლილი პორტი)
+  sudo ufw allow 80/tcp             # HTTP
+  sudo ufw allow 443/tcp            # HTTPS
+  sudo ufw allow from 10.0.0.0/8    # შიდა ქსელი
+  
+  sudo ufw enable                   # ჩართვა
+  sudo ufw status verbose           # სტატუსი
+
+პორტის შეცვლა (SSH):
+  # /etc/ssh/sshd_config
+  Port 2222  # არა 22
+  
+  sudo ufw allow 2222/tcp
+  sudo ufw delete allow 22/tcp
+  sudo systemctl restart sshd
+  
+  # შესვლა: ssh -p 2222 user@server` }
+      ]},
+      { name: "Networking & DNS", details: [
+        { title: "DNS ჩანაწერები", content: `DNS — Domain Name System. დომენს IP მისამართს უკავშირებს.
+
+A Record — დომენი → IPv4
+  example.com → 164.92.123.45
+  api.example.com → 164.92.123.45
+
+CNAME — Alias (ერთი დომენი → მეორე)
+  www.example.com → example.com
+  blog.example.com → myblog.netlify.app
+
+MX Record — ელ-ფოსტის სერვერი
+  example.com → mail.example.com (priority: 10)
+
+TXT Record — ვერიფიკაცია, SPF, DKIM
+  example.com → "v=spf1 include:_spf.google.com ~all"
+
+TTL (Time To Live) — ქეშირების დრო
+  300 = 5 წუთი (ახალი დომენისთვის)
+  3600 = 1 საათი (სტაბილურისთვის)
+  86400 = 24 საათი (იშვიათად იცვლება)` },
+        { title: "Hostinger → DigitalOcean", content: `ნაბიჯი 1: შექმენი Droplet DigitalOcean-ზე
+  - Ubuntu 22.04 LTS
+  - SSH key დაამატე
+  - დაიმახსოვრე IP (მაგ: 164.92.123.45)
+
+ნაბიჯი 2: Hostinger-ში DNS Settings:
+  - წაშალე არსებული A Records
+  - დაამატე ახალი:
+    Type: A
+    Name: @
+    Value: 164.92.123.45
+    TTL: 300
+  - www-სთვის:
+    Type: CNAME
+    Name: www
+    Value: example.com
+    TTL: 300
+
+ნაბიჯი 3: შემოწმება
+  dig example.com A
+  nslookup example.com
+  ping example.com
+  # DNS propagation: https://www.whatsmydns.net/
+
+ნაბიჯი 4: სერვერზე Nginx-ის გამართვა
+  (ეს ფაზა 2-ში იქნება)` }
+      ]}
+    ]
+  },
+  {
+    id: 2, title: "Nginx & Web Serving", duration: "1-2 კვირა", icon: "🌐",
+    description: "ტრაფიკის მართვა — როგორ მიაღწიოს მომხმარებლის მოთხოვნამ შენს აპლიკაციას.",
+    topics: [
+      { name: "Reverse Proxy", details: [
+        { title: "კონცეფცია", content: `Reverse Proxy — შუამავალი კლიენტსა და სერვერს შორის.
+
+მომხმარებელი → Nginx (:80/:443) → Node.js (:3000)
+
+რატომ Nginx და არა პირდაპირი Node.js?
+  1. SSL termination — HTTPS Nginx-ზე, HTTP შიგნით
+  2. Load Balancing — რამდენიმე instance-ს შორის
+  3. Static files — Nginx ბევრად სწრაფია
+  4. Security — Node.js არ "ჩანს" გარეთ
+  5. Caching — ხშირი პასუხების ქეშირება` },
+        { title: "Nginx კონფიგურაცია", content: `დააყენე: sudo apt install nginx
+
+ფაილი: /etc/nginx/sites-available/myapp
+
+server {
+    listen 80;
+    server_name example.com www.example.com;
+
+    # Static files (React build)
+    location / {
+        root /var/www/myapp/build;
+        try_files $uri $uri/ /index.html;
+    }
+
+    # API Reverse Proxy
+    location /api/ {
+        proxy_pass http://localhost:3000/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+გააქტიურე:
+  sudo ln -s /etc/nginx/sites-available/myapp \\
+             /etc/nginx/sites-enabled/
+  sudo nginx -t          # ტესტირება
+  sudo systemctl reload nginx` }
+      ]},
+      { name: "SSL/TLS (HTTPS)", details: [
+        { title: "Certbot-ით HTTPS", content: `Let's Encrypt — უფასო SSL სერტიფიკატი.
+
+დაყენება:
+  sudo apt install certbot python3-certbot-nginx
+
+გაშვება:
+  sudo certbot --nginx -d example.com -d www.example.com
+  
+  # ავტომატურად:
+  # 1. მიიღებს სერტიფიკატს
+  # 2. Nginx კონფიგს შეცვლის
+  # 3. HTTP → HTTPS redirect დაამატებს
+
+შედეგი (/etc/nginx/sites-available/myapp):
+server {
+    listen 443 ssl;
+    server_name example.com;
+    
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    
+    # ... შენი კონფიგურაცია ...
+}
+server {
+    listen 80;
+    server_name example.com;
+    return 301 https://$server_name$request_uri;
+}
+
+ავტო-განახლება (certbot timer):
+  sudo certbot renew --dry-run  # ტესტი
+  # cron: 0 12 * * * certbot renew --quiet` }
+      ]},
+      { name: "Optimization", details: [
+        { title: "Gzip, Caching, Performance", content: `/etc/nginx/nginx.conf — http ბლოკში:
+
+# Gzip კომპრესია
+gzip on;
+gzip_vary on;
+gzip_min_length 1024;
+gzip_types
+    text/plain text/css text/xml
+    application/json application/javascript
+    application/xml+rss text/javascript
+    image/svg+xml;
+
+# Static files caching
+location ~* \\.(js|css|png|jpg|jpeg|gif|ico|svg|woff2)$ {
+    expires 30d;
+    add_header Cache-Control "public, immutable";
+    access_log off;
+}
+
+# Security headers
+add_header X-Frame-Options "SAMEORIGIN" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header X-XSS-Protection "1; mode=block" always;
+add_header Referrer-Policy "strict-origin-when-cross-origin";
+
+# Rate limiting
+limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;
+location /api/ {
+    limit_req zone=api burst=20 nodelay;
+    proxy_pass http://localhost:3000/;
+}
+
+# Connection tuning
+worker_processes auto;
+worker_connections 1024;
+keepalive_timeout 65;
+client_max_body_size 10M;` }
+      ]}
+    ]
+  },
+  {
+    id: 3, title: "Docker Pro", duration: "2-3 კვირა", icon: "🐳",
+    description: "კონტეინერიზაციის გაღრმავება — პროფესიონალური Docker workflow.",
+    topics: [
+      { name: "Dockerfile Optimization", details: [
+        { title: "Multi-stage Builds", content: `პრობლემა: Node.js image 1GB+, .NET SDK image 2GB+
+გამოსავალი: Multi-stage build — Build ერთ stage-ში, Run მეორეში.
+
+Node.js მაგალითი:
+
+# Stage 1: Build
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production && \\
+    cp -R node_modules prod_modules && \\
+    npm ci
+COPY . .
+RUN npm run build
+
+# Stage 2: Production
+FROM node:20-alpine AS production
+WORKDIR /app
+COPY --from=builder /app/prod_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package.json .
+
+USER node
+EXPOSE 3000
+CMD ["node", "dist/server.js"]
+
+# შედეგი: ~150MB ნაცვლად 1GB+
+
+.NET მაგალითი:
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY *.csproj .
+RUN dotnet restore
+COPY . .
+RUN dotnet publish -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=build /app/publish .
+USER 1000
+EXPOSE 8080
+ENTRYPOINT ["dotnet", "MyApi.dll"]` },
+        { title: ".dockerignore & Layer Caching", content: `.dockerignore ფაილი (როგორც .gitignore):
+node_modules
+npm-debug.log
+.git
+.env
+Dockerfile
+docker-compose.yml
+*.md
+.vscode
+
+Layer Caching სტრატეგია:
+  # ⚠️ ცუდი — ყოველ COPY-ზე cache იშლება
+  COPY . .
+  RUN npm install
+  
+  # ✅ კარგი — package.json ცალკე
+  COPY package*.json ./
+  RUN npm ci              # ეს layer ქეშდება!
+  COPY . .                # მხოლოდ კოდის ცვლილებაზე
+
+Best Practices:
+  1. alpine base images (node:20-alpine)
+  2. USER node (არასოდეს root!)
+  3. HEALTHCHECK --interval=30s CMD curl -f http://localhost:3000/health
+  4. ENV NODE_ENV=production
+  5. RUN ბრძანებების გაერთიანება (ნაკლები layer)` }
+      ]},
+      { name: "Networking & Volumes", details: [
+        { title: "Docker Networking", content: `Docker Networks — კონტეინერების კომუნიკაცია.
+
+# ქსელის შექმნა
+docker network create myapp-network
+
+# კონტეინერების გაშვება ერთ ქსელში
+docker run -d --name postgres \\
+  --network myapp-network \\
+  -e POSTGRES_PASSWORD=secret \\
+  postgres:16-alpine
+
+docker run -d --name api \\
+  --network myapp-network \\
+  -e DATABASE_URL=postgresql://postgres:secret@postgres:5432/mydb \\
+  myapp:latest
+
+# "postgres" — DNS სახელი ქსელში!
+# არ გჭირდება IP, Docker DNS აგვარებს
+
+Network Types:
+  bridge (default) — იზოლირებული ქსელი
+  host — სერვერის ქსელი პირდაპირ
+  none — ქსელის გარეშე
+  overlay — Swarm/multi-host` },
+        { title: "Volumes — მონაცემების შენახვა", content: `კონტეინერი წაიშლება → მონაცემებიც!
+Volume — მონაცემები კონტეინერის გარეთ.
+
+# Named Volume (Docker მართავს)
+docker volume create pgdata
+docker run -d --name postgres \\
+  -v pgdata:/var/lib/postgresql/data \\
+  postgres:16-alpine
+
+# Bind Mount (შენ მართავ)
+docker run -d --name api \\
+  -v /opt/myapp/uploads:/app/uploads \\
+  myapp:latest
+
+# Volume ბრძანებები
+docker volume ls                    # სია
+docker volume inspect pgdata        # დეტალები
+docker volume rm pgdata             # წაშლა (⚠️ მონაცემებიც!)
+docker volume prune                 # unused-ების წაშლა
+
+Backup:
+  docker run --rm \\
+    -v pgdata:/data \\
+    -v $(pwd):/backup \\
+    alpine tar czf /backup/pgdata-backup.tar.gz /data` }
+      ]},
+      { name: "Docker Compose", details: [
+        { title: "სრული Stack", content: `docker-compose.yml — მთელი ინფრასტრუქტურა ერთ ფაილში:
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: myapp
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: \${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d myapp"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --requirepass \${REDIS_PASSWORD}
+    volumes:
+      - redisdata:/data
+
+  # Backend API
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://admin:\${DB_PASSWORD}@postgres:5432/myapp
+      REDIS_URL: redis://:\${REDIS_PASSWORD}@redis:6379
+      NODE_ENV: production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
+  redisdata:
+
+# .env ფაილი (არასოდეს git-ში!)
+# DB_PASSWORD=supersecret
+# REDIS_PASSWORD=redissecret` },
+        { title: "Compose ბრძანებები", content: `ძირითადი ბრძანებები:
+  docker compose up -d          # ყველას გაშვება (background)
+  docker compose down           # ყველას გაჩერება
+  docker compose ps             # სტატუსი
+  docker compose logs -f api    # api-ის ლოგები (real-time)
+  docker compose exec api sh    # shell api კონტეინერში
+  docker compose build          # rebuild images
+  docker compose pull           # pull latest images
+
+ხშირი ოპერაციები:
+  # მხოლოდ ერთი სერვისის restart
+  docker compose restart api
+  
+  # rebuild + restart ერთი სერვისის
+  docker compose up -d --build api
+  
+  # scale (თუ port conflict არაა)
+  docker compose up -d --scale api=3
+  
+  # volumes-ის წაშლაც
+  docker compose down -v  # ⚠️ მონაცემებიც წაიშლება!
+
+Production Tips:
+  1. ყოველთვის restart: unless-stopped
+  2. healthcheck ყველა სერვისზე
+  3. depends_on + condition
+  4. .env ფაილი secrets-ისთვის
+  5. docker compose -f docker-compose.prod.yml up -d` }
+      ]}
+    ]
+  },
+  {
+    id: 4, title: "CI/CD & ავტომატიზაცია", duration: "3-4 კვირა", icon: "⚡",
+    description: "ნამდვილი DevOps — კოდის push-იდან deploy-მდე ავტომატურად.",
+    topics: [
+      { name: "GitHub Actions", details: [
+        { title: "CI Pipeline", content: `ფაილი: .github/workflows/ci.yml
+
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_PASSWORD: test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test
+        env:
+          DATABASE_URL: postgresql://postgres:test@localhost:5432/test_db
+      
+      - run: npm run build` },
+        { title: "Docker Build & Push", content: `ფაილი: .github/workflows/deploy.yml
+
+name: Build & Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: \${{ secrets.DOCKERHUB_USERNAME }}
+          password: \${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Build and Push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            myuser/myapp:latest
+            myuser/myapp:\${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: \${{ secrets.SERVER_HOST }}
+          username: deploy
+          key: \${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /opt/myapp
+            docker compose pull
+            docker compose up -d
+            docker image prune -f
+
+# GitHub Settings → Secrets → Actions:
+# DOCKERHUB_USERNAME, DOCKERHUB_TOKEN
+# SERVER_HOST, SSH_PRIVATE_KEY` }
+      ]},
+      { name: "Self-hosted CD", details: [
+        { title: "Webhook-based Deploy", content: `ვარიანტი 1: Webhook სერვერი (მარტივი)
+
+# /opt/deploy/webhook.sh
+#!/bin/bash
+cd /opt/myapp
+git pull origin main
+docker compose pull
+docker compose up -d --remove-orphans
+docker image prune -f
+
+echo "Deployed at $(date)" >> /var/log/deploy.log
+
+ვარიანტი 2: Watchtower (ავტომატური)
+# Docker Hub-ზე ახალი image → ავტომატური update
+
+docker run -d \\
+  --name watchtower \\
+  -v /var/run/docker.sock:/var/run/docker.sock \\
+  containrrr/watchtower \\
+  --interval 300 \\
+  --cleanup \\
+  myapp-api myapp-frontend
+
+ვარიანტი 3: GitHub Actions + SSH
+  (ზემოთ ნაჩვენები deploy job)
+
+Zero-downtime Deploy:
+  # docker-compose.yml-ში
+  deploy:
+    update_config:
+      order: start-first    # ჯერ ახალი, შემდეგ ძველის წაშლა
+    
+  # ან ხელით:
+  docker compose up -d --no-deps --build api
+  # --no-deps: DB-ს არ გადაუტვირთავს` }
+      ]},
+      { name: "Ansible Basics", details: [
+        { title: "სერვერის ავტომატიზაცია", content: `Ansible — სერვერების კონფიგურაცია კოდით (SSH-ით, agent-ის გარეშე).
+
+დაყენება (ლოკალურად):
+  pip install ansible
+
+inventory.yml:
+all:
+  hosts:
+    web1:
+      ansible_host: 164.92.123.45
+      ansible_user: deploy
+
+playbook.yml — სერვერის მომზადება:
+---
+- name: Setup Production Server
+  hosts: all
+  become: yes
+  
+  tasks:
+    - name: Update system
+      apt:
+        update_cache: yes
+        upgrade: safe
+    
+    - name: Install Docker
+      apt:
+        name:
+          - docker.io
+          - docker-compose-plugin
+        state: present
+    
+    - name: Add deploy user to docker group
+      user:
+        name: deploy
+        groups: docker
+        append: yes
+    
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+    
+    - name: Copy Nginx config
+      template:
+        src: templates/nginx.conf.j2
+        dest: /etc/nginx/sites-available/myapp
+      notify: Reload Nginx
+    
+    - name: Enable site
+      file:
+        src: /etc/nginx/sites-available/myapp
+        dest: /etc/nginx/sites-enabled/myapp
+        state: link
+  
+  handlers:
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: reloaded
+
+გაშვება:
+  ansible-playbook -i inventory.yml playbook.yml` }
+      ]}
+    ]
+  },
+  {
+    id: 5, title: "IaC & Cloud", duration: "1-2 თვე", icon: "☁️",
+    description: "Middle DevOps-ის გზა — ინფრასტრუქტურა კოდით, მონიტორინგი.",
+    topics: [
+      { name: "Terraform", details: [
+        { title: "DigitalOcean + Terraform", content: `Terraform — ინფრასტრუქტურის აღწერა კოდით (IaC).
+
+main.tf:
+terraform {
+  required_providers {
+    digitalocean = {
+      source  = "digitalocean/digitalocean"
+      version = "~> 2.0"
+    }
+  }
+}
+
+variable "do_token" {
+  sensitive = true
+}
+
+provider "digitalocean" {
+  token = var.do_token
+}
+
+resource "digitalocean_droplet" "web" {
+  image    = "ubuntu-22-04-x64"
+  name     = "web-server-1"
+  region   = "fra1"
+  size     = "s-1vcpu-1gb"
+  ssh_keys = [digitalocean_ssh_key.deploy.fingerprint]
+  tags     = ["web", "production"]
+}
+
+resource "digitalocean_ssh_key" "deploy" {
+  name       = "deploy-key"
+  public_key = file("~/.ssh/id_ed25519.pub")
+}
+
+resource "digitalocean_firewall" "web" {
+  name        = "web-firewall"
+  droplet_ids = [digitalocean_droplet.web.id]
+
+  inbound_rule {
+    protocol         = "tcp"
+    port_range       = "22"
+    source_addresses = ["0.0.0.0/0"]
+  }
+  inbound_rule {
+    protocol         = "tcp"
+    port_range       = "80"
+    source_addresses = ["0.0.0.0/0"]
+  }
+  inbound_rule {
+    protocol         = "tcp"
+    port_range       = "443"
+    source_addresses = ["0.0.0.0/0"]
+  }
+  outbound_rule {
+    protocol              = "tcp"
+    port_range            = "all"
+    destination_addresses = ["0.0.0.0/0"]
+  }
+}
+
+output "server_ip" {
+  value = digitalocean_droplet.web.ipv4_address
+}
+
+ბრძანებები:
+  terraform init          # პროვაიდერის ჩამოტვირთვა
+  terraform plan          # რა შეიცვლება?
+  terraform apply         # შექმნა!
+  terraform destroy       # ყველაფრის წაშლა` }
+      ]},
+      { name: "Monitoring", details: [
+        { title: "Prometheus + Grafana", content: `Prometheus — მეტრიკების შეგროვება
+Grafana — ვიზუალიზაცია და alerting
+
+docker-compose.monitoring.yml:
+
+version: '3.8'
+services:
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - promdata:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=30d'
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafanadata:/var/lib/grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: \${GRAFANA_PASSWORD}
+
+  node-exporter:
+    image: prom/node-exporter
+    ports:
+      - "9100:9100"
+    command:
+      - '--path.rootfs=/host'
+    volumes:
+      - '/:/host:ro'
+
+volumes:
+  promdata:
+  grafanadata:
+
+prometheus.yml:
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
+  
+  - job_name: 'myapp'
+    static_configs:
+      - targets: ['api:3000']
+    metrics_path: '/metrics'
+
+რას აკვირდები:
+  CPU usage, Memory, Disk I/O
+  HTTP request rate & latency
+  Error rate (5xx)
+  Container health
+  
+Grafana Dashboard IDs (import):
+  1860 — Node Exporter Full
+  11159 — Docker monitoring` }
+      ]}
+    ]
+  },
+  {
+    id: 6, title: "Senior Level", duration: "6+ თვე", icon: "🏗️",
+    description: "დიდი თამაში — კლასტერები, ორკესტრაცია, უსაფრთხოება.",
+    topics: [
+      { name: "Kubernetes (K8s)", details: [
+        { title: "კონცეფცია და არქიტექტურა", content: `Kubernetes — კონტეინერების ორკესტრაცია.
+
+როდის გჭირდება K8s?
+  - ერთი სერვერი ვეღარ უძლებს ტრაფიკს
+  - გჭირდება auto-scaling
+  - Zero-downtime deployments
+  - მრავალი microservice-ის მართვა
+
+ძირითადი კონცეფციები:
+  Pod — ყველაზე პატარა ერთეული (1+ container)
+  Deployment — Pod-ების მართვა (scaling, rolling updates)
+  Service — Pod-ებზე წვდომის აბსტრაქცია (DNS + LB)
+  Ingress — გარე ტრაფიკი → Service
+  ConfigMap — კონფიგურაცია
+  Secret — პაროლები, API keys
+  Namespace — იზოლაცია (dev, staging, prod)
+
+როგორ დაიწყო:
+  1. minikube — ლოკალური K8s
+  2. kind — Docker-based K8s
+  3. DigitalOcean Kubernetes (DOKS) — managed K8s
+
+kubectl — K8s CLI:
+  kubectl get pods
+  kubectl get services
+  kubectl describe pod myapp-abc123
+  kubectl logs myapp-abc123
+  kubectl exec -it myapp-abc123 -- /bin/sh` },
+        { title: "K8s Manifests", content: `deployment.yml:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-api
+  namespace: production
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp-api
+  template:
+    metadata:
+      labels:
+        app: myapp-api
+    spec:
+      containers:
+        - name: api
+          image: myuser/myapp:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: myapp-secrets
+                  key: database-url
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-api-svc
+spec:
+  selector:
+    app: myapp-api
+  ports:
+    - port: 80
+      targetPort: 3000
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  tls:
+    - hosts:
+        - api.example.com
+      secretName: api-tls
+  rules:
+    - host: api.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: myapp-api-svc
+                port:
+                  number: 80` }
+      ]},
+      { name: "Helm", details: [
+        { title: "K8s Package Manager", content: `Helm — K8s-ის "apt/npm". Chart = რთული აპის შაბლონი.
+
+დაყენება:
+  curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+გამოყენება:
+  helm repo add bitnami https://charts.bitnami.com/bitnami
+  helm install my-postgres bitnami/postgresql \\
+    --set auth.postgresPassword=secret \\
+    --set primary.persistence.size=10Gi
+
+  helm install my-redis bitnami/redis \\
+    --set auth.password=redissecret
+
+  helm list
+  helm status my-postgres
+  
+  helm upgrade my-postgres bitnami/postgresql \\
+    --set auth.postgresPassword=newsecret
+  
+  helm uninstall my-postgres
+
+საკუთარი Chart:
+  helm create myapp-chart
+  
+  myapp-chart/
+    Chart.yaml          # მეტადატა
+    values.yaml         # default values
+    templates/
+      deployment.yaml   # {{ .Values.replicaCount }}
+      service.yaml
+      ingress.yaml
+      _helpers.tpl
+
+values.yaml:
+  replicaCount: 3
+  image:
+    repository: myuser/myapp
+    tag: latest
+  service:
+    port: 80
+  ingress:
+    enabled: true
+    host: api.example.com` }
+      ]},
+      { name: "DevSecOps", details: [
+        { title: "უსაფრთხოების ავტომატიზაცია", content: `DevSecOps — Security ინტეგრირებული CI/CD-ში.
+
+1. Image Scanning (Trivy):
+  trivy image myuser/myapp:latest
+  trivy fs --security-checks vuln,config .
+
+  # GitHub Actions-ში
+  - name: Scan image
+    uses: aquasecurity/trivy-action@master
+    with:
+      image-ref: myuser/myapp:latest
+      severity: CRITICAL,HIGH
+      exit-code: 1  # fail pipeline!
+
+2. Secret Scanning:
+  # არასოდეს .env git-ში!
+  # გამოიყენე:
+  - HashiCorp Vault
+  - AWS Secrets Manager
+  - GitHub Secrets
+  - Kubernetes Secrets (encrypted at rest)
+
+3. Network Policies (K8s):
+  apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    name: api-netpol
+  spec:
+    podSelector:
+      matchLabels:
+        app: myapp-api
+    ingress:
+      - from:
+        - podSelector:
+            matchLabels:
+              app: myapp-frontend
+        ports:
+          - port: 3000
+    # მხოლოდ frontend-ს შეუძლია api-სთან კომუნიკაცია!
+
+4. RBAC (Role-Based Access Control):
+  - არ გამოიყენო cluster-admin ყველგან
+  - ServiceAccount თითოეული აპისთვის
+  - least privilege principle
+
+5. რეგულარული audit:
+  - kube-bench — CIS benchmark
+  - kubeaudit — security audit
+  - falco — runtime security` }
+      ]}
+    ]
+  }
+];
+
+const skillMap = [
+  { phase: 1, skills: ["Linux CLI", "Systemd", "SSH", "Networking"] },
+  { phase: 2, skills: ["Nginx", "SSL/TLS", "Performance"] },
+  { phase: 3, skills: ["Dockerfile", "Compose", "Volumes"] },
+  { phase: 4, skills: ["GitHub Actions", "CD", "Ansible"] },
+  { phase: 5, skills: ["Terraform", "Prometheus", "Grafana"] },
+  { phase: 6, skills: ["K8s", "Helm", "DevSecOps"] },
+];
+
+const totalSkills = skillMap.reduce((a, p) => a + p.skills.length, 0);
+
+// ─── STATE ───
+let state = {
+  activePhase: null,
+  activeTopic: null,
+  activeDetail: null,
+  completed: new Set()
+};
+
+// ─── RENDER ───
+function updateProgress() {
+  const n = state.completed.size;
+  const pct = Math.round((n / totalSkills) * 100);
+  document.getElementById('progressCount').textContent = `${n}/${totalSkills} skills`;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+function renderSidebar() {
+  const sb = document.getElementById('sidebar');
+  let html = '';
+
+  phases.forEach((p, i) => {
+    const sk = skillMap[i].skills;
+    const done = sk.filter(s => state.completed.has(s)).length;
+    const isActive = state.activePhase === i;
+    const badgeColor = done === sk.length ? 'var(--accent-green)' : 'var(--text-muted)';
+
+    html += `<div class="phase-item ${isActive ? 'active' : ''}" onclick="selectPhase(${i})"
+      ${isActive ? `style="border-left-color:${['var(--accent-green)','var(--accent-blue)','var(--accent-cyan)','var(--accent-orange)','var(--accent-purple)','var(--accent-red)'][i]}"` : ''}>
+      <span class="phase-icon">${p.icon}</span>
+      <div class="phase-info">
+        <div class="phase-name">ფაზა ${p.id}: ${p.title}</div>
+        <div class="phase-dur">${p.duration}</div>
+      </div>
+      <span class="phase-badge" style="color:${badgeColor}">${done}/${sk.length}</span>
+    </div>`;
+  });
+
+  // Skill Tracker
+  html += '<div class="tracker"><div class="tracker-title">Skill Tracker</div>';
+  skillMap.forEach((sm) => {
+    html += `<div class="tracker-phase-label">ფაზა ${sm.phase}</div>`;
+    sm.skills.forEach(skill => {
+      const done = state.completed.has(skill);
+      html += `<label class="tracker-skill ${done ? 'done' : ''}">
+        <input type="checkbox" ${done ? 'checked' : ''} onchange="toggleSkill('${skill}')">
+        <span>${skill}</span>
+      </label>`;
+    });
+  });
+  html += '</div>';
+
+  sb.innerHTML = html;
+}
+
+function renderMain() {
+  const main = document.getElementById('main');
+
+  if (state.activePhase === null) {
+    let cards = phases.map((p, i) =>
+      `<div class="welcome-card" onclick="selectPhase(${i})">
+        <div class="wc-icon">${p.icon}</div>
+        <div class="wc-name">${p.title}</div>
+        <div class="wc-dur">${p.duration}</div>
+      </div>`
+    ).join('');
+
+    main.innerHTML = `<div class="welcome">
+      <div class="welcome-icon">🚀</div>
+      <h2>DevOps გზამკვლევი</h2>
+      <p>აირჩიე ფაზა მარცხენა პანელიდან. თითოეული ფაზა შეიცავს დეტალურ გაიდს კოდის მაგალითებით. მონიშნე შესრულებული skill-ები პროგრესის სანახავად.</p>
+      <div class="welcome-grid">${cards}</div>
+    </div>`;
+    return;
+  }
+
+  const phase = phases[state.activePhase];
+  const accentColors = ['var(--accent-green)','var(--accent-blue)','var(--accent-cyan)','var(--accent-orange)','var(--accent-purple)','var(--accent-red)'];
+  const accent = accentColors[state.activePhase];
+
+  let topicTabs = phase.topics.map((t, ti) =>
+    `<button class="topic-tab ${state.activeTopic === ti ? 'active' : ''}"
+      onclick="selectTopic(${ti})"
+      ${state.activeTopic === ti ? `style="border-color:${accent};background:${accent}18;color:${accent}"` : ''}>
+      ${t.name}
+    </button>`
+  ).join('');
+
+  let content = '';
+
+  if (state.activeTopic === null) {
+    content = '<div class="topic-prompt">აირჩიე თემა ზემოდან</div>';
+  } else {
+    const topic = phase.topics[state.activeTopic];
+
+    let detailTabs = topic.details.map((d, di) =>
+      `<button class="detail-tab ${state.activeDetail === di ? 'active' : ''}" onclick="selectDetail(${di})">${d.title}</button>`
+    ).join('');
+
+    let terminalBlock = '';
+    if (state.activeDetail !== null) {
+      const detail = topic.details[state.activeDetail];
+      terminalBlock = `<div class="terminal">
+        <div class="terminal-bar">
+          <div class="terminal-dot r"></div>
+          <div class="terminal-dot y"></div>
+          <div class="terminal-dot g"></div>
+          <span class="terminal-title">${detail.title}</span>
+        </div>
+        <pre>${escapeHtml(detail.content)}</pre>
+      </div>`;
+    }
+
+    content = `<div class="content-area">
+      <div class="detail-tabs">${detailTabs}</div>
+      ${terminalBlock}
+    </div>`;
+  }
+
+  main.innerHTML = `
+    <div class="phase-header">
+      <div class="phase-header-top">
+        <span class="ph-icon">${phase.icon}</span>
+        <div>
+          <h2>ფაზა ${phase.id}: ${phase.title}</h2>
+          <p>${phase.description}</p>
+        </div>
+      </div>
+      <div class="topic-tabs">${topicTabs}</div>
+    </div>
+    ${content}`;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ─── ACTIONS ───
+function selectPhase(i) {
+  state.activePhase = i;
+  state.activeTopic = null;
+  state.activeDetail = null;
+  render();
+}
+
+function selectTopic(i) {
+  state.activeTopic = i;
+  state.activeDetail = null;
+  render();
+}
+
+function selectDetail(i) {
+  state.activeDetail = i;
+  render();
+}
+
+function toggleSkill(skill) {
+  if (state.completed.has(skill)) state.completed.delete(skill);
+  else state.completed.add(skill);
+  render();
+}
+
+function render() {
+  updateProgress();
+  renderSidebar();
+  renderMain();
+}
+
+// ─── INIT ───
+render();
+</script>
+</body>
+</html>
