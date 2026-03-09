@@ -1767,7 +1767,19 @@ function selectDetail(i) {
 function toggleSkill(skill) {
   if (state.completed.has(skill)) state.completed.delete(skill);
   else state.completed.add(skill);
+  saveCompleted();
   render();
+}
+
+function saveCompleted() {
+  localStorage.setItem('devops_completed', JSON.stringify([...state.completed]));
+}
+
+function loadCompleted() {
+  try {
+    const saved = localStorage.getItem('devops_completed');
+    if (saved) state.completed = new Set(JSON.parse(saved));
+  } catch (e) {}
 }
 
 function render() {
@@ -1777,6 +1789,7 @@ function render() {
 }
 
 // ─── INIT ───
+loadCompleted();
 render();
 </script>
 </body>
